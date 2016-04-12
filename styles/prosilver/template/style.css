@@ -1,0 +1,212 @@
+html, body
+{
+	background: #eeeeee;
+	color: #000000;
+	margin: 0px;
+	padding: 0px;
+	height: 100%;
+	overflow: hidden;
+	font: 13px Verdana, Arial, Tahoma;
+}
+
+img
+{
+	border: 0 solid;
+}
+
+a, a:visited, a:active
+{
+	font-weight: bold;
+	color: #003388;
+	text-decoration: none;
+}
+
+a:hover
+{
+	color: #fc4100;
+}
+
+h1
+{
+	color: #8F0000;
+	font-family: Arial;
+	font-size: 12pt;
+	font-weight: bold;
+	margin-bottom: 5px;
+	margin-top: 5px;
+	text-align: center;
+}
+
+/*
+ * Messages container
+ */
+#main
+{
+	position: absolute;
+	width: auto;
+	height: auto;
+	top: 0px;
+	right: 200px;
+	bottom: 60px;
+	left: 0;
+	overflow: auto;
+	background-color: #f2f2fa;
+	border-right: 1px #d1d7dc solid;
+	border-bottom: 1px #d1d7dc solid;
+}
+
+#main div
+{
+	padding: 0px 4px;
+	overflow: hidden; /* cut very long messages */
+}
+
+#main .date
+{
+	font: 12px "Courier New",Courier;
+	color: #007000;
+}
+
+#main .private
+{
+	font-weight: bold;
+	color: red;
+	background-color: #fae0e0;
+}
+
+#main .to
+{
+	font-weight: bold;
+}
+
+/*
+ * Users container
+ */
+#users
+{
+	position: absolute;
+	width: 200px;
+	height: auto;
+	top: 0px;
+	right: 0;
+	bottom: 60px;
+	left: auto;
+	overflow: auto;
+}
+
+/*
+ * Sending messages box
+ */
+#controlbox
+{
+	position: absolute;
+	width: auto;
+	height: 60px;
+	top: auto;
+	right: 200px;
+	bottom: 0;
+	left: 0;
+}
+
+#controlbox table td
+{
+	font: 13px Verdana,Arial,Tahoma;
+}
+
+/*
+ * Buttons
+ */
+.btn-link, #btn-send
+{
+	display: block;
+	border: solid 1px #b0b0b0;
+	background-color: #e1e1e1;
+	color: #003388;
+}
+
+.btn-link:hover, #btn-send:hover
+{
+	border: solid 1px #316ac5;
+	background-color: #dff1ff;
+	/*color: #fc4100;*/
+}
+
+.btn-link
+{
+	height: 16px;
+	width: 16px;
+}
+
+#btn-send
+{
+	font-size: 12px;
+	font-weight: bold;
+	padding: 2px 7px;
+}
+
+select, textarea, input
+{
+	border: solid 1px #b0b0b0;
+	font: 12px Verdana,Arial,Tahoma;
+	color: #191970;
+}
+
+#message
+{
+	font: 13px Verdana,Arial,Tahoma;
+}
+
+/*
+ * Smileys
+ */
+#smiles
+{
+	position: absolute;
+	width: 200px;
+	height: 60px;
+	top: auto;
+	right: 0;
+	bottom: 0;
+	left: auto;
+	z-index: 10;
+	overflow: auto;
+}
+
+#smiles img
+{
+	vertical-align: top;
+	margin: 2px 2px;
+	cursor: pointer;
+}
+
+/*
+ * Copyrights
+ */
+#footer
+{
+	position: absolute;
+	width: 100%;
+	height: 13px;
+	top: auto;
+	right: 0;
+	bottom: 0;
+	left: 0;
+
+	font-size: 10px;
+	color: #444444;
+	letter-spacing: -1px;
+	text-align: center;
+}
+
+#footer a
+{
+	font-size: 10px;
+	color: #000000;
+	font-weight: normal;
+}
+
+#footer a:hover
+{
+	color: #000000;
+	text-decoration: underline;
+}

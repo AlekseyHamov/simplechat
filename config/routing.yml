@@ -1,0 +1,3 @@
+Sumanai_simplechat_controller:
+    pattern: /simplechat
+    defaults: { _controller: Sumanai.simplechat.controller:main }

@@ -1,0 +1,28 @@
+services:
+    Sumanai.simplechat.controller:
+        class: Sumanai\simplechat\controller\simplechat
+        arguments:
+            - @request
+            - @dbal.conn
+            - @auth
+            - @user
+            - @config
+            - @config_text
+            - @template
+            - %core.root_path%
+            - %core.table_prefix%
+            - %core.php_ext%
+    Sumanai.simplechat.listener:
+        class: Sumanai\simplechat\event\listener
+        arguments:
+            - @request
+            - @dbal.conn
+            - @auth
+            - @user
+            - @config
+            - @config_text
+            - @template
+            - %core.root_path%
+            - %core.table_prefix%
+        tags:
+            - { name: event.listener }

@@ -1,0 +1,30 @@
+<!-- INCLUDE overall_header.html -->
+<h1>{L_ACP_SIMPLECHAT}</h1>
+<p>{L_ACP_SIMPLECHAT_EXPLAIN}</p>
+<form id="acp_simplechat" method="post" action="{U_ACTION}">
+   <fieldset>
+      <dl>
+         <dt><label for="show_greeting">{L_ACP_SIMPLECHAT_SHOW_GREETING}</label>
+             {L_ACP_SIMPLECHAT_PRIMER}
+         </dt>
+         <dd><input name="show_greeting" type="checkbox" value="{SHOW_GREETING}" {SHOW_GREETING_CH} ></dd>
+         <dt><label for="message_limit">{L_ACP_SIMPLECHAT_MESSAGES_LIMIT}</label></dt>
+         <dd><input name="message_limit" type="text" value="{MESSAGES_LIMIT}"></dd>
+         
+         <dt><label for="antiflood_sensitivity">{L_ACP_SIMPLECHAT_ANTIFLOOD_SENSITIVITY}</label></dt>
+         <dd><input name="antiflood_sensitivity" type="text" value="{ANTIFLOOD_SENSITIVITY}" ></dd>
+         
+         <dt><label for="antiflood_extinction">{L_ACP_SIMPLECHAT_ANTIFLOOD_EXTINCTION}</label></dt>
+         <dd><input name="antiflood_extinction" type="text" value="{ANTIFLOOD_EXTINCTION}" ></dd>
+         
+         <dt><label for="antiflood_duration">{L_ACP_SIMPLECHAT_ANTIFLOOD_DURATION}</label></dt>
+         <dd><input name="antiflood_duration" type="text" value="{ANTIFLOOD_DURATION}" ></dd>
+      </dl>
+      <p class="submit-buttons">
+         <input class="button1" type="submit" id="submit" name="submit" value="{L_SUBMIT}" />&nbsp;
+         <input class="button2" type="reset" id="reset" name="reset" value="{L_RESET}" />
+      </p>
+      {S_FORM_TOKEN}
+   </fieldset>
+</form>
+<!-- INCLUDE overall_footer.html -->
