@@ -102,7 +102,7 @@ if($action != ACT_LOAD && $this->request->variable('build', BUILD_TIME) != BUILD
     exit;
 }
 // Auth check
-$this->template->assign_var('MES','3333333');
+
 if (!$this->user->data['is_registered'] && $this->user->data['user_id'] != ANONYMOUS)
 {
 	if ($action!=ACT_LOAD)
@@ -124,7 +124,7 @@ $show_greeting=$this->config['show_greeting'];
 $antiflood_sensitivity=$this->config['antiflood_sensitivity'];
 $antiflood_extinction=$this->config['antiflood_extinction'];
 $antiflood_duration=$this->config['antiflood_duration'];
-$this->template->assign_var('MES','ttttt '.$show_greeting);
+
 // Detect left users
 $die_time = time() - SESSION_LIFE;
 //if (LEFT_MESSAGES)
