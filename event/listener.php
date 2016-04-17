@@ -83,7 +83,7 @@ class listener implements EventSubscriberInterface
 		$post_id = (int) $data['post_id'];
 		$topic_id = (int) $data['topic_id'];
 		$forum_id = (int) $data['forum_id'];
-        $post_list = (int) $data['post_list'];
+        $topic_title = $data['topic_title'];
 		$mode = $event['mode'];  
         if ((int)$this->user->data['user_id'] != 0)
         {
@@ -103,7 +103,7 @@ class listener implements EventSubscriberInterface
             }
             if($topic_notification)
             {
-                $notify .= " ответил в теме: <a href=".$topic_url.">{$topic_url}</a>";
+                $notify .= " ответил в теме: <a href=".$topic_url.">{$topic_title}</a>";
             }
         
             $message = array(
