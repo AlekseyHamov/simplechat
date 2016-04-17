@@ -24,5 +24,6 @@ services:
             - @template
             - %core.root_path%
             - %core.table_prefix%
+            - %core.php_ext%
         tags:
             - { name: event.listener }

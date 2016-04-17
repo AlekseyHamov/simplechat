@@ -16,7 +16,7 @@ class main_info
         return array(
             'filename'    => '\Sumanai\simplechat\acp\main_module',
             'title'        => 'ACP_SIMPLECHAT',
-            'version'    => '0.0.1',
+            'version'    => '0.0.2',
             'modes'        => array(
             'settings'    => array('title' => 'ACP_SIMPLECHAT', 'auth' => 'ext_Sumanai/simplechat && acl_a_board', 'cat' => array('ACP_SIMPLECHAT')),
             ),

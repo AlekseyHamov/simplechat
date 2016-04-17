@@ -37,6 +37,7 @@ class main_module
             $config->set('antiflood_sensitivity', $request->variable('antiflood_sensitivity',0));
             $config->set('antiflood_extinction', $request->variable('antiflood_extinction',0));
             $config->set('antiflood_duration', $request->variable('antiflood_duration',0));
+            $config->set('chat_bot', $request->variable('chat_bot',0));
             
             trigger_error($user->lang['CONFIG_UPDATED'] . adm_back_link($this->u_action));
         }
@@ -45,12 +46,14 @@ class main_module
             'U_ACTION'        => $this->u_action,
             'VALUE'=> $config['show_greeting'],
             //'SHOW_GREETING'   => (isset($config['show_greeting'])) ? $config['show_greeting'] : '',
-            'SHOW_GREETING'   =>    ((int)isset($config['show_greeting'])==1) ? 1 : 0 ,
-            'SHOW_GREETING_CH'   => ((int)$config['show_greeting']==1) ? 'checked' : '' ,
-            'MESSAGES_LIMIT'     => ((int)isset($config['message_limit'])) ? $config['message_limit']:'',
-            'ANTIFLOOD_SENSITIVITY'     => ((int)isset($config['antiflood_sensitivity'])) ? $config['antiflood_sensitivity']:'',
-            'ANTIFLOOD_EXTINCTION'     => ((int)isset($config['antiflood_extinction'])) ? $config['antiflood_extinction']:'',
-            'ANTIFLOOD_DURATION'     => ((int)isset($config['antiflood_duration'])) ? $config['antiflood_duration']:'', 
+            'SHOW_GREETING'         => ((int)isset($config['show_greeting'])==1) ? 1 : 0 ,
+            'SHOW_GREETING_CH'      => ((int)$config['show_greeting']==1) ? 'checked' : '' ,
+            'MESSAGES_LIMIT'        => ((int)isset($config['message_limit'])) ? $config['message_limit']:'',
+            'ANTIFLOOD_SENSITIVITY' => ((int)isset($config['antiflood_sensitivity'])) ? $config['antiflood_sensitivity']:'',
+            'ANTIFLOOD_EXTINCTION'  => ((int)isset($config['antiflood_extinction'])) ? $config['antiflood_extinction']:'',
+            'ANTIFLOOD_DURATION'    => ((int)isset($config['antiflood_duration'])) ? $config['antiflood_duration']:'', 
+            'CHAT_BOT'         => ((int)isset($config['chat_bot'])==1) ? 1 : 0 ,
+            'CHAT_BOT_CH'      => ((int)$config['chat_bot']==1) ? 'checked' : '' ,
 
         ));
         

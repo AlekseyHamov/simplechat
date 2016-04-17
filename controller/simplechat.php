@@ -12,6 +12,7 @@ namespace Sumanai\simplechat\controller;
 use Symfony\Component\HttpFoundation\Response;
 
 class simplechat
+//class listener implements EventSubscriberInterface
 {
 	/** @var \phpbb\db\driver\driver_interface */
     protected $db;	
@@ -72,6 +73,46 @@ class simplechat
         define('MSG_JOIN',	'/hello');
         define('MSG_LEFT',	'/bye');
 	}
+    static public function getSubscribedEvents()
+	{
+		return array(
+			'core.submit_post_end'						=> 'first_post_sticky',
+		);
+	}
+
+	public function first_post_sticky($event)
+	{
+		global $post_data;
+		$data = $event['data'];
+		$post_id = (int) $data['post_id'];
+		$topic_id = (int) $data['topic_id'];
+		$forum_id = (int) $data['forum_id'];
+		$mode = $event['mode'];
+        echo('Тест');        
+		// Set initial value for the new topic
+//		$post_data['topic_first_post_show'] = (isset($post_data['topic_first_post_show'])) ? $post_data['topic_first_post_show'] : 0;
+
+		// Check if the checkbox has been checked
+//		$topic_first_post_show = isset($_POST['topic_first_post_show']);
+
+		// Show/Unshow first post on every page
+	/*	if (($mode == 'edit' && $post_id == $data['topic_first_post_id']) || $mode == 'post')
+		{
+			$perm_show_unshow = ($this->auth->acl_get('m_lock', $forum_id) ||
+				($this->auth->acl_get('f_user_lock', $forum_id) && $this->user->data['is_registered'] && !empty($post_data['poster_id']) && $this->user->data['user_id'] == $post_data['poster_id'])
+			);
+
+			if ($post_data['topic_first_post_show'] != $topic_first_post_show && $perm_show_unshow)
+			{
+				$sql = 'UPDATE ' . TOPICS_TABLE . '
+					SET topic_first_post_show = ' . (($topic_first_post_show) ? 1 : 0) . " 
+					WHERE topic_id = $topic_id";
+				$this->db->sql_query($sql);
+			}
+		}
+        */
+	}
+
 
 	public function load_language_on_setup($event)
 	{

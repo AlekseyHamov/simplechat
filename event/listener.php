@@ -34,6 +34,7 @@ class listener implements EventSubscriberInterface
 	/** @var \phpbb\template\template */
 	protected $template;
 	protected $phpbb_root_path;
+    protected $php_ext;
     
 
 	
@@ -41,13 +42,13 @@ class listener implements EventSubscriberInterface
 	{
 		return array(
 			'core.user_setup'						=> 'load_language_on_setup',
-			'core.page_footer'						=> 'content_footer',
+            'core.submit_post_end'					=> 'first_post_sticky',
 		);
 	}
 	/**
 	* Constructor
 	*/
-	public function __construct(\phpbb\request\request_interface $request, \phpbb\db\driver\driver_interface $db, \phpbb\auth\auth $auth, \phpbb\user $user, \phpbb\config\config $config, \phpbb\config\db_text $config_text, \phpbb\template\template $template, $phpbb_root_path, $table_prefix )
+	public function __construct(\phpbb\request\request_interface $request, \phpbb\db\driver\driver_interface $db, \phpbb\auth\auth $auth, \phpbb\user $user, \phpbb\config\config $config, \phpbb\config\db_text $config_text, \phpbb\template\template $template, $phpbb_root_path, $table_prefix, $php_ext )
 	{
         $this->request = $request;
 		$this->db = $db;
@@ -59,11 +60,10 @@ class listener implements EventSubscriberInterface
         //$this->language = $language;
 		$this->phpbb_root_path = $phpbb_root_path;
 		$this->table_prefix = $table_prefix;
+        $this->php_ext = $php_ext; 
 		define(__NAMESPACE__ . '\USER_TABLE', $this->table_prefix . 'users');
         define('CHAT_MESSAGES_TABLE',	$this->table_prefix . 'chat_messages');
         define('CHAT_SESSIONS_TABLE',	$this->table_prefix . 'chat_sessions');
-
-
 	}
 
 	public function load_language_on_setup($event)
@@ -75,49 +75,51 @@ class listener implements EventSubscriberInterface
 		);
 		$event['lang_set_ext'] = $lang_set_ext;
 	}
-   
-public function content_footer()
-{
-/*
-switch ($action)
-{
-	// Load chat body
-	case ACT_LOAD:
-		//include_once($phpbb_root_path . 'includes/functions_posting.' . $phpEx);
-         
-		//page_header($user->lang['chat']);
-		//$this->template->set_custom_template($phpbb_chat_path.'template', 'simplechat');
-		//$this->template->set_custom_style('simplechat', $phpbb_chat_path.'template');
-		//$this->template->set_filenames(array('bodys' => 'chat_body.html'));
-		$this->template->assign_vars(array(
-			'COPYRIGHT' 	=> 'проверка входа'.$this->user->lang['POWERED_BY_CHAT'],
-			'BUILD_TIME' 	=> BUILD_TIME
-		));
-		//generate_smilies("inline", false);
-		//page_footer();
-	//exit;
-    
-}        
-*/
 
-/*		$countdayadd=$this->config['before_day'];
-		$dayend=date('z',time()+((60*60*24*$countdayadd)));
-		$daynow=date('z',time());
-		$sql = 'SELECT user_id, username, user_avatar, user_avatar_type , STR_TO_DATE(user_birthday,"%d-%m-%Y") as user_birthday, NOW() 
-            FROM ' . USER_TABLE .' 
-			WHERE (UNIX_TIMESTAMP()- user_lastpost_time)<(60*60*24*'.$this->config['active_post_begin_day'].')  			and DAYOFYEAR(STR_TO_DATE(user_birthday,"%d-%m-%Y")) between '.$daynow.' and '.$dayend .' 
-			order by DAYOFYEAR(STR_TO_DATE(user_birthday,"%d-%m-%Y"))' ;
-        $result = $this->db->sql_query($sql);
-        while ($row = $this->db->sql_fetchrow($result))
+	public function first_post_sticky($event)
+	{
+		//global $post_data;
+		$data = $event['data'];
+		$post_id = (int) $data['post_id'];
+		$topic_id = (int) $data['topic_id'];
+		$forum_id = (int) $data['forum_id'];
+        $post_list = (int) $data['post_list'];
+		$mode = $event['mode'];  
+        if ((int)$this->user->data['user_id'] != 0)
         {
-				  if ($birthday>0)
-				  {
-						$this->template->assign_block_vars('rowbd', array(
-							'ID' 				=> $row['user_id'],
-							'NAME'				=> get_user_avatar($row['user_avatar'], $row['user_avatar_type'], 25, 'auto').'</br>'.$row['username'],
-							'BIRTHDAY'				=>'Через '.($birthday).' '.$d.'  исполнится '.$yarh.$y,
-						));
-					}
-        }*/
+            $topic_notification = ($mode == 'reply' || $mode == 'quote') ? true : false;
+            $forum_notification = ($mode == 'post') ? true : false;
+            //if (!$topic_notification && !$forum_notification) return;
+
+            $poster_id = $this->user->data['user_id'];
+            $page_name=generate_board_url();
+            $forum_url = "{$page_name}/viewforum.{$this->php_ext}?f={$forum_id}";                                        //generate_board_url() . "/viewforum.$phpEx?f=$forum_id";
+            $topic_url = "{$page_name}/viewtopic.{$this->php_ext}?f={$forum_id}&t={$topic_id}&p={$post_id}#p{$post_id}";//generate_board_url() . "/viewtopic.$phpEx?f=$forum_id&t=$topic_id&p=$post_id&e=$post_id";
+
+            $notify = "<strong>" . $this->user->data['username'] . "</strong> ";
+            if($forum_notification)
+            {
+                $notify .= " создал в форуме «<a href='{$forum_url}'>{$forum_name}</a>» новую тему: <a href='{$topic_url}'>{$topic_title}</a>";
+            }
+            if($topic_notification)
+            {
+                $notify .= " ответил в теме: <a href=".$topic_url.">{$topic_url}</a>";
+            }
+        
+            $message = array(
+                'user_id'	=> 0,//$this->user->data['user_id'],
+                'username'	=> 'Чат бот',//$this->user->data['username'],
+                'time'		=> time(),
+                'text'		=> $notify,
+                'color'		=> '000000'
+            );
+        	$sql = "INSERT INTO " . CHAT_MESSAGES_TABLE . " " . $this->db->sql_build_array('INSERT', $message);
+            if ((int)$this->config['chat_bot']==1)
+            {
+                $this->db->sql_query($sql);
+            } 
+        }
+
 	}
+	
 }
