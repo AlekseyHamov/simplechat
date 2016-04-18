@@ -121,7 +121,7 @@ class listener implements EventSubscriberInterface
                 'user_id'	=> 0,//$this->user->data['user_id'],
                 'username'	=> 'Чат',//$this->user->data['username'],
                 'time'		=> time(),
-                'text'		=> count($tests).' массив '.$textmas.' далее'.$this->config_text->get('simplechat_excluded'),//$notify,
+                'text'		=> $notify,
                 'color'		=> '000000'
             );
         	$sql = "INSERT INTO " . CHAT_MESSAGES_TABLE . " " . $this->db->sql_build_array('INSERT', $message);
