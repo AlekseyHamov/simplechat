@@ -36,7 +36,7 @@ class simplechat
 		$this->auth = $auth;
         $this->user = $user;
 		$this->config = $config;
-		$this->text = $config_text;
+		$this->config_text = $config_text;
 		$this->template = $template;
         //$this->language = $language;
 		$this->phpbb_root_path = $phpbb_root_path;

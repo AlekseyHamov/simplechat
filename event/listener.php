@@ -55,7 +55,7 @@ class listener implements EventSubscriberInterface
 		$this->auth = $auth;
         $this->user = $user;
 		$this->config = $config;
-		$this->text = $config_text;
+		$this->config_text = $config_text;
 		$this->template = $template;
         //$this->language = $language;
 		$this->phpbb_root_path = $phpbb_root_path;
@@ -85,11 +85,22 @@ class listener implements EventSubscriberInterface
 		$forum_id = (int) $data['forum_id'];
         $topic_title = $data['topic_title'];
 		$mode = $event['mode'];  
+        if ((int)$this->config['chat_bot']==1 ) return;
+		$tests=explode(',', $this->config_text->get('simplechat_excluded'));
+		$i=0;
+		While ($i < count($tests))
+		{
+			if ($forum_id=(int)$tests[$i])
+			{
+			  return;					
+			}
+			$i++;
+		}
         if ((int)$this->user->data['user_id'] != 0)
         {
             $topic_notification = ($mode == 'reply' || $mode == 'quote') ? true : false;
             $forum_notification = ($mode == 'post') ? true : false;
-            //if (!$topic_notification && !$forum_notification) return;
+            if (!$topic_notification && !$forum_notification) return;
 
             $poster_id = $this->user->data['user_id'];
             $page_name=generate_board_url();
@@ -105,19 +116,16 @@ class listener implements EventSubscriberInterface
             {
                 $notify .= " ответил в теме: <a href=".$topic_url.">{$topic_title}</a>";
             }
-        
+
             $message = array(
                 'user_id'	=> 0,//$this->user->data['user_id'],
-                'username'	=> 'Чат бот',//$this->user->data['username'],
+                'username'	=> 'Чат',//$this->user->data['username'],
                 'time'		=> time(),
-                'text'		=> $notify,
+                'text'		=> count($tests).' массив '.$textmas.' далее'.$this->config_text->get('simplechat_excluded'),//$notify,
                 'color'		=> '000000'
             );
         	$sql = "INSERT INTO " . CHAT_MESSAGES_TABLE . " " . $this->db->sql_build_array('INSERT', $message);
-            if ((int)$this->config['chat_bot']==1)
-            {
-                $this->db->sql_query($sql);
-            } 
+	        $this->db->sql_query($sql);
         }
 
 	}
