@@ -43,6 +43,7 @@ class listener implements EventSubscriberInterface
 		return array(
 			'core.user_setup'						=> 'load_language_on_setup',
             'core.submit_post_end'					=> 'first_post_sticky',
+			'core.page_header'						=> 'add_page_header_link',
 		);
 	}
 	/**
@@ -75,6 +76,12 @@ class listener implements EventSubscriberInterface
 		);
 		$event['lang_set_ext'] = $lang_set_ext;
 	}
+  	public function add_page_header_link($event)
+	{
+		$this->template->assign_vars(array(
+			'SIMPLECHAT' => append_sid("{$this->phpbb_root_path}simplechat"),
+		));
+	}
 
 	public function first_post_sticky($event)
 	{
@@ -85,18 +92,17 @@ class listener implements EventSubscriberInterface
 		$forum_id = (int) $data['forum_id'];
         $topic_title = $data['topic_title'];
 		$mode = $event['mode'];  
-        if ((int)$this->config['chat_bot']==1 ) return;
 		$tests=explode(',', $this->config_text->get('simplechat_excluded'));
 		$i=0;
 		While ($i < count($tests))
 		{
-			if ($forum_id=(int)$tests[$i])
+			if ($forum_id==(int)$tests[$i])
 			{
-			  return;					
+			return;
 			}
 			$i++;
 		}
-        if ((int)$this->user->data['user_id'] != 0)
+        if ((int)$this->user->data['user_id'] != 0 && (int)$this->config['chat_bot']==1 )
         {
             $topic_notification = ($mode == 'reply' || $mode == 'quote') ? true : false;
             $forum_notification = ($mode == 'post') ? true : false;
@@ -116,7 +122,6 @@ class listener implements EventSubscriberInterface
             {
                 $notify .= " ответил в теме: <a href=".$topic_url.">{$topic_title}</a>";
             }
-
             $message = array(
                 'user_id'	=> 0,//$this->user->data['user_id'],
                 'username'	=> 'Чат',//$this->user->data['username'],
@@ -124,10 +129,9 @@ class listener implements EventSubscriberInterface
                 'text'		=> $notify,
                 'color'		=> '000000'
             );
-        	$sql = "INSERT INTO " . CHAT_MESSAGES_TABLE . " " . $this->db->sql_build_array('INSERT', $message);
-	        $this->db->sql_query($sql);
+        	$sql = "INSERT INTO " . CHAT_MESSAGES_TABLE . " " . $this->db->sql_build_array('INSERT', $message);           
+            $this->db->sql_query($sql);
         }
-
 	}
 	
 }

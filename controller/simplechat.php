@@ -36,7 +36,7 @@ class simplechat
 		$this->auth = $auth;
         $this->user = $user;
 		$this->config = $config;
-		$this->config_text = $config_text;
+		$this->text = $config_text;
 		$this->template = $template;
         //$this->language = $language;
 		$this->phpbb_root_path = $phpbb_root_path;
@@ -92,7 +92,7 @@ class simplechat
 		// Set initial value for the new topic
 //		$post_data['topic_first_post_show'] = (isset($post_data['topic_first_post_show'])) ? $post_data['topic_first_post_show'] : 0;
 
-		// Check if the checkbox has been checked
+		// <Chec></Chec>k if the checkbox has been checked
 //		$topic_first_post_show = isset($_POST['topic_first_post_show']);
 
 		// Show/Unshow first post on every page
