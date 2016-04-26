@@ -90,6 +90,7 @@ class listener implements EventSubscriberInterface
 		$post_id = (int) $data['post_id'];
 		$topic_id = (int) $data['topic_id'];
 		$forum_id = (int) $data['forum_id'];
+		$forum_name = $data['forum_name'];
         $topic_title = $data['topic_title'];
 		$mode = $event['mode'];  
 		$tests=explode(',', $this->config_text->get('simplechat_excluded'));
@@ -122,15 +123,19 @@ class listener implements EventSubscriberInterface
             {
                 $notify .= " ответил в теме: <a href=".$topic_url.">{$topic_title}</a>";
             }
+			$chatbot_name='Чат';
+			if (!$this->config['chatbot_name'])
+			{
+				$chatbot_name=$this->config['chatbot_name'];	
+			}
             $message = array(
                 'user_id'	=> 0,//$this->user->data['user_id'],
-                'username'	=> 'Чат',//$this->user->data['username'],
+                'username'	=> $chatbot_name,//$this->user->data['username'],
                 'time'		=> time(),
                 'text'		=> $notify,
                 'color'		=> '000000'
             );
-        	$sql = "INSERT INTO " . CHAT_MESSAGES_TABLE . " " . $this->db->sql_build_array('INSERT', $message);           
-            $this->db->sql_query($sql);
+        	$sql = "INSERT INTO " . CHAT_MESSAGES_TABLE . " " . $this->db->sql_build_array('INSERT', $message);             $this->db->sql_query($sql);
         }
 	}
 	

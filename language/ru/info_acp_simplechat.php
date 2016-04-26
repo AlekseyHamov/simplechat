@@ -31,6 +31,7 @@ $lang = array_merge($lang, array(
 	'ACP_SIMPLECHAT_ANTIFLOOD_SENSITIVITY' =>  'Не более подряд сообщений',
     'ACP_SIMPLECHAT_ANTIFLOOD_EXTINCTION' =>   'Набор сообщения меньше чем (сек)',
     'ACP_SIMPLECHAT_ANTIFLOOD_DURATION' =>     'Время блокировки флудера (сек)',
+	'ACP_SIMPLECHAT_ANTIFLOOD_DURATION' =>	'Имя бота в чате',
     'ACP_SIMPLECHAT_CHAT_BOT' =>     'Чат бот',
 	'ACP_SIMPLECHAT_EXCLUDED'=>'Выделить исключаемые форумы для бота',
 	

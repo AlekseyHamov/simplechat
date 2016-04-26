@@ -37,6 +37,7 @@ class main_module
             $config->set('antiflood_sensitivity', $request->variable('antiflood_sensitivity',0));
             $config->set('antiflood_extinction', $request->variable('antiflood_extinction',0));
             $config->set('antiflood_duration', $request->variable('antiflood_duration',0));
+			$config->set('chatbot_name', $request->variable('chatbot_name',''));
             $config->set('chat_bot', $request->variable('chat_bot',0));
 			$config_text->set('simplechat_excluded', implode(',', $request->variable('simplechat_excluded', array(0))));
             
@@ -53,6 +54,7 @@ class main_module
             'ANTIFLOOD_SENSITIVITY' => ((int)isset($config['antiflood_sensitivity'])) ? $config['antiflood_sensitivity']:'',
             'ANTIFLOOD_EXTINCTION'  => ((int)isset($config['antiflood_extinction'])) ? $config['antiflood_extinction']:'',
             'ANTIFLOOD_DURATION'    => ((int)isset($config['antiflood_duration'])) ? $config['antiflood_duration']:'', 
+			'CHATBOT_NAME'    => (isset($config['chatbot_name'])) ? $config['chatbot_name']:'', 
             'CHAT_BOT'         => ((int)isset($config['chat_bot'])==1) ? 1 : 0 ,
             'CHAT_BOT_CH'      => ((int)$config['chat_bot']==1) ? 'checked' : '' ,
 			'SIMPLECHAT_EXCLUDED_FORUMS' => make_forum_select(explode(',', $config_text->get('simplechat_excluded')), false, false, true),
