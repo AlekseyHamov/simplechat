@@ -21,6 +21,7 @@ class main_module
         $this->tpl_name = 'acp_simplechat_body';
         $this->page_title = $user->lang('ACP_SIMPLECHAT');
         add_form_key('Sumanai/simplechat');
+		header('Content-Type: text/html; charset=utf-8;');
 
         $config_text = $phpbb_container->get('config_text');
 
@@ -37,10 +38,9 @@ class main_module
             $config->set('antiflood_sensitivity', $request->variable('antiflood_sensitivity',0));
             $config->set('antiflood_extinction', $request->variable('antiflood_extinction',0));
             $config->set('antiflood_duration', $request->variable('antiflood_duration',0));
-			$config->set('chatbot_name', $request->variable('chatbot_name',''));
+			$config->set('chatbot_name', utf8_normalize_nfc(trim($request->variable('chatbot_name','', true))) );
             $config->set('chat_bot', $request->variable('chat_bot',0));
-			$config_text->set('simplechat_excluded', implode(',', $request->variable('simplechat_excluded', array(0))));
-            
+			$config_text->set('simplechat_excluded', implode(',', $request->variable('simplechat_excluded', array(0))));            
             trigger_error($user->lang['CONFIG_UPDATED'] . adm_back_link($this->u_action));
         }
 
