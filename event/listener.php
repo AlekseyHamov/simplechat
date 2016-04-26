@@ -124,7 +124,7 @@ class listener implements EventSubscriberInterface
                 $notify .= " ответил в теме: <a href=".$topic_url.">{$topic_title}</a>";
             }
 			$chatbot_name='Чат';
-			if (!$this->config['chatbot_name'])
+			if (trim($this->config['chatbot_name'])!='')
 			{
 				$chatbot_name=$this->config['chatbot_name'];	
 			}
