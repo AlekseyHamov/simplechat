@@ -91,7 +91,7 @@ class listener implements EventSubscriberInterface
 		$topic_id = (int) $data['topic_id'];
 		$forum_id = (int) $data['forum_id'];
 		$forum_name = $data['forum_name'];
-        $topic_title = $data['topic_title'];
+                $topic_title = $data['topic_title'];
 		$mode = $event['mode'];  
 		$tests=explode(',', $this->config_text->get('simplechat_excluded'));
 		$i=0;
@@ -103,12 +103,11 @@ class listener implements EventSubscriberInterface
 			}
 			$i++;
 		}
-        if ((int)$this->user->data['user_id'] != 0 && (int)$this->config['chat_bot']==1 )
+	$topic_notification = ($mode == 'reply' || $mode == 'quote') ? true : false;
+        $forum_notification = ($mode == 'post') ? true : false;
+        //if (!$topic_notification && !$forum_notification) return;
+        if ((int)$this->user->data['user_id'] != 0 && (int)$this->config['chat_bot']==1 && !$topic_notification && !$forum_notification)
         {
-            $topic_notification = ($mode == 'reply' || $mode == 'quote') ? true : false;
-            $forum_notification = ($mode == 'post') ? true : false;
-            if (!$topic_notification && !$forum_notification) return;
-
             $poster_id = $this->user->data['user_id'];
             $page_name=generate_board_url();
             $forum_url = "{$page_name}/viewforum.{$this->php_ext}?f={$forum_id}";                                        //generate_board_url() . "/viewforum.$phpEx?f=$forum_id";
