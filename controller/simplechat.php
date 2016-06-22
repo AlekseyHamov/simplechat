@@ -370,9 +370,10 @@ switch ($action)
 				{
 					$endp = utf8_strpos($tmp, "]");
 					$to = str_replace("private [", "", utf8_substr($tmp, 0, $endp));
-					if($to == $user->data['username']) $show = true;
+					if($to == $this->user->data['username']) $show = true;
 					$tmp = trim(utf8_substr($tmp, $endp+1));
 				}
+				//echo($tmp);
 				$msgpriv = trim(utf8_substr($text, 0, utf8_strlen($text)-utf8_strlen($tmp)));
 				$text = "<span class=\"private\">" . $msgpriv . "</span> " . $tmp;
 			}
