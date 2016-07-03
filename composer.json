@@ -28,6 +28,11 @@
         "display-name": "SimpleChat",
         "soft-require": {
            "phpbb/phpbb": "3.1.*@dev"
+        },
+    	"version-check": {
+            "host": "hover-club-omsk.ru",
+            "directory": "/versions",
+            "filename": "NewYear.json"
         }
     }
 }

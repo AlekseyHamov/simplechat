@@ -1,0 +1,11 @@
+{
+    "stable": {
+        "0.0.3": {
+            "current": "0.0.3",
+            "announcement": "http://www.google.ru",
+            "download": "https://codeload.github.com/AlekseyHamov/simplechat/zip/master",
+            "eol": null,
+            "security": false
+        }
+    }
+}
