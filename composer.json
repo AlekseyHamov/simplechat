@@ -32,7 +32,7 @@
     	"version-check": {
             "host": "hover-club-omsk.ru",
             "directory": "/versions",
-            "filename": "NewYear.json"
+            "filename": "simplechat.json"
         }
     }
 }
