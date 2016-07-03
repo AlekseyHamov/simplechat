@@ -20,6 +20,7 @@ $lang = array_merge($lang, array(
 	'NOW_IN_CHAT'			=> 'Сейчас в чате',
 	'N_MESSAGES'			=> 'сообщений',
 	'N_UPDATES'				=> 'обновлений',
+	'MESVISIBLE'			=> 'показать удаленные',
 	// Будьте добры, не удаляйте копирайт и ссылки!
 	'POWERED_BY_CHAT'			=> 'Работает на phpBB Simple Chat',
 ));

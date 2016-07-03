@@ -32,12 +32,15 @@
 			<td>{L_COLOR}:</td>
 			<td width="200px"><script language="javascript" type="text/javascript">WriteColorTable(5, 200, 3);</script></td>
 			<td>&nbsp;&nbsp;&nbsp;{L_UPDATING}:</td>
-			<td width="100%"><select id="refresh" name="refresh" onchange="SetDelay(this.options[this.selectedIndex].value);"><option value="5">5 {L_SECONDS}<option value="10">10 {L_SECONDS}<option value="15" selected>15 {L_SECONDS}<option value="30">30 {L_SECONDS}<option value="45">45 {L_SECONDS}<option value="60">60 {L_SECONDS}</select></td>
+			<td width="200px"><select id="refresh" name="refresh" onchange="SetDelay(this.options[this.selectedIndex].value);"><option value="5">5 {L_SECONDS}<option value="10">10 {L_SECONDS}<option value="15" selected>15 {L_SECONDS}<option value="30">30 {L_SECONDS}<option value="45">45 {L_SECONDS}<option value="60">60 {L_SECONDS}</select></td>
+			<!-- IF U_ACP or U_MCP --><td width="100%">{L_MESVISIBLE}{ACPCHEK}</td><!-- ENDIF -->
 			<td><a id="btn-sound" title="{L_SOUND}" href="#" class="btn-link" style="background-image: url('./ext/Sumanai/simplechat/media/sound.png');"></a></td>
 		</tr></table>
 	</div>
 	<div id="smiles"><!-- BEGIN smiley --><a href="#" onclick="MessageEdit.Smilie('{smiley.A_SMILEY_CODE}'); return false;"><img src="{smiley.SMILEY_IMG}" width="{smiley.SMILEY_WIDTH}" height="{smiley.SMILEY_HEIGHT}" alt="{smiley.SMILEY_CODE}" title="{smiley.SMILEY_DESC}" /></a><!-- END smiley --></div>
-	<div id="footer">{MES}{COPYRIGHT} :: [<span id="msg_counter">0</span> {L_N_MESSAGES} | <span id="upd_counter">0</span> {L_N_UPDATES}]</div>
+	<div id="footer">
+		{MES}{COPYRIGHT} :: [<span id="msg_counter">0</span> {L_N_MESSAGES} | <span id="upd_counter">0</span> {L_N_UPDATES}]
+	</div>
 	<audio id="audio-notify" preload><source src="./ext/Sumanai/simplechat/media/event.ogg" type='audio/ogg; codecs=vorbis'><source src="./ext/Sumanai/simplechat/media/event.mp3" type="audio/mpeg"></audio>
 </body>
 

@@ -68,6 +68,7 @@ class simplechat
         define('ACT_LOAD', 	'load');
         define('ACT_SYNC', 	'sync');
         define('ACT_SAY',	'say');
+		define('ACT_DEL',	'del');
 
         // Special messages
         define('MSG_JOIN',	'/hello');
@@ -76,7 +77,7 @@ class simplechat
     static public function getSubscribedEvents()
 	{
 		return array(
-			'core.submit_post_end'						=> 'first_post_sticky',
+			'core.submit_post_end'=> 'first_post_sticky',
 		);
 	}
 
@@ -185,7 +186,8 @@ if ($show_greeting!=0)
 			'username'	=> $row['username'],
 			'time'		=> $row['last_active'] + SESSION_LIFE,
 			'text'		=> MSG_LEFT,
-			'color'		=> '000000'
+			'color'		=> '000000',
+			'hidemessage' => true
 		);
 		$sql = "INSERT INTO " . CHAT_MESSAGES_TABLE . " " . $this->db->sql_build_array('INSERT', $message);
 		$this->db->sql_query($sql);
@@ -228,7 +230,8 @@ if(!$chat_session)
 			'username'	=> $this->user->data['username'],
 			'time'		=> time(),
 			'text'		=> MSG_JOIN,
-			'color'		=> '000000'
+			'color'		=> '000000',
+			'hidemessage' => true
 		);
 	$sql = "INSERT INTO " . CHAT_MESSAGES_TABLE . " " . $this->db->sql_build_array('INSERT', $message);
     $this->db->sql_query($sql);
@@ -274,8 +277,9 @@ switch ($action)
         $this->template->set_filenames(array('body' => 'chat_body.html'));
 		$this->template->assign_vars(array(
 			'COPYRIGHT' 	=> '',//'проверка входа'.$user->lang['POWERED_BY'],
-			'BUILD_TIME' 	=> BUILD_TIME
-		));
+			'BUILD_TIME' 	=> BUILD_TIME,
+			'ACPCHEK'		=> '<input type="checkbox" name="visiblemes" id="visiblemes" >'
+		));		
 		generate_smilies('inline', false);
 		page_footer();
 	exit;
@@ -313,12 +317,28 @@ switch ($action)
 				'username'	=> $this->user->data['username'],
 				'time'		=> time(),
 				'text'		=> $text,
-				'color'		=> $color
+				'color'		=> $color,
+			'hidemessage' => true
 			);
 			$sql = "INSERT INTO " . CHAT_MESSAGES_TABLE . " " . $this->db->sql_build_array('INSERT', $message);
 			$this->db->sql_query($sql);
 		}
   	exit;
+
+
+	case ACT_DEL:
+		$ID = $this->request->variable('ID', '');
+		if ($this->auth->acl_gets('a_', 'm_'))
+		{
+			$sql = " UPDATE " . CHAT_MESSAGES_TABLE . "  SET hidemessage = not hidemessage  WHERE msg_id =" . $ID ;
+		}else 
+		{
+			$sql = " UPDATE " . CHAT_MESSAGES_TABLE . "  SET hidemessage = not hidemessage  WHERE user_id	=". $this->user->data['user_id']." and msg_id =" . $ID ;
+		}
+		$this->db->sql_query($sql);
+		echo("SetLastId($ID);\n");	
+  	exit;
+
 	// Chat sync
 	case ACT_SYNC:
 		//include($phpbb_root_path . 'includes/message_parser.' . $phpEx);
@@ -331,11 +351,14 @@ switch ($action)
         
 		// Output new messages
 		$last_id = $this->request->variable('lastid', 0);
-        
-		$sql = "SELECT *
-			FROM " . CHAT_MESSAGES_TABLE . "
-			WHERE msg_id > " . $last_id . "
-			ORDER BY msg_id";
+		$sql = "SELECT * FROM " . CHAT_MESSAGES_TABLE ;
+		$sql .= " WHERE msg_id > " . $last_id ;
+		$visiblemes=$this->request->variable('visiblemes','');
+		if ($visiblemes == 'on')
+			{$sql .= " and hidemessage= false " ;}
+		else
+			{$sql .= " and hidemessage= true " ;}	
+		$sql.=" ORDER BY msg_id";	
 		$result = $this->db->sql_query($sql);
 		while ($row = $this->db->sql_fetchrow($result))
 		{
@@ -347,7 +370,6 @@ switch ($action)
 			$color = addslashes($row['color']);
             //echo($this->user->format_date($row['time'], "H:i", true));
 			$time = addslashes($this->user->format_date($row['time'], "H:i", true));
-
 			$text = trim($row['text']);
 			if($text == MSG_JOIN)
 			{
@@ -361,7 +383,10 @@ switch ($action)
 			}
 
 			// Handle private messages
-			$show = true;
+			if ($row['hidemessage'] == true)
+			{$show = true;} 
+			else 
+			{$show = false;} 
 			if( utf8_substr($text, 0, utf8_strlen("private ["))=="private [" )
 			{
 				$show = false;

@@ -3,7 +3,7 @@
     "type": "phpbb-extension",
     "description": "Простой чат для phpBB3 в стиле чата сайта delphimaster.ru",
     "homepage": "http://phpbbex.com/forum/viewtopic.php?t=41",
-    "version": "0.0.2",
+    "version": "0.0.3",
     "time": "2016-04-17",
     "license": "GPL-2.0",
     "authors": [

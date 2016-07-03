@@ -58,7 +58,8 @@ class main_module
             'CHAT_BOT'         => ((int)isset($config['chat_bot'])==1) ? 1 : 0 ,
             'CHAT_BOT_CH'      => ((int)$config['chat_bot']==1) ? 'checked' : '' ,
 			'SIMPLECHAT_EXCLUDED_FORUMS' => make_forum_select(explode(',', $config_text->get('simplechat_excluded')), false, false, true),
+
+			//'SIMPLECHAT_EXCLUDED_USERS' => $auth->acl_raw_data(),
         ));
-        
     }
 }

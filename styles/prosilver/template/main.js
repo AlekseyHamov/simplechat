@@ -123,7 +123,13 @@ MessageEdit =
 		$("#message").focus();
 	}
 };
-
+DeleteMessage =
+{
+	To: function(IDMESD)
+	{
+    	DelMessage(IDMESD);
+	}
+};
 jQuery(function($)
 {
 	MessageEdit.SetColor(null); // Load from the settings storage
@@ -208,7 +214,7 @@ function LogEvent(text)
 function LogMessage(id,time,nick,msg,color)
 {
 	var html = "";
-	if(time) html += "<span class='date'>"+time+"</span>&nbsp;";
+	if(time) html += "<span class='date'><a href='#' onclick=\"javascript:DeleteMessage.To('"+id+"')\">"+time+"</a></span>&nbsp;";
 	if(nick) html += "[<a href='#' onclick=\"javascript:MessageEdit.To('"+addslashes(nick)+"'); return false;\">"+nick+"</a>]&nbsp;";
 	if(color) html += "<span style='color:#"+color+"'>"+msg+"</span>"; else html += msg;
 	LogEvent(html);
@@ -258,11 +264,17 @@ function RefreshChat()
 	if(InProgress) return;
 	InProgress = true;
 	ShowIcon("loading");
+	var VisiblemesFlag = '';
+	if (visiblemes.checked)
+  		{  VisiblemesFlag = 'on';}
+  	else
+  		{  VisiblemesFlag = ''; }
+
 	$.ajax(
 	{
 		type: 		"POST",
 		url: 		"simplechat?build={BUILD_TIME}",
-		data: 		{"action": "sync", "lastid": LastUpdate},
+		data: 		{"action": "sync", "lastid": LastUpdate,"visiblemes":VisiblemesFlag},
 		dataType:	'script',
 		cache:		false,
 		timeout:	15000
@@ -307,6 +319,47 @@ function SendMessage(text, color)
 		ShowIcon("error");
 	});
 }
+function DelSync()
+{
+	var VisiblemesFlag = '';
+	if (visiblemes.checked)
+  		{  VisiblemesFlag = 'on';}
+  	else
+  		{  VisiblemesFlag = ''; }
+
+	$.ajax(
+	{
+		type: 		"POST",
+		url: 		"simplechat?build={BUILD_TIME}",
+		data: 		{"action": "sync", "lastid": '',"visiblemes":VisiblemesFlag},
+		dataType:	'script',
+		cache:		false,
+		timeout:	15000
+	})	
+}
+function DelMessage(IDMES)
+{
+	//LastUpdate=IDMES;
+	$.ajax(
+	{
+		type: 		"POST",
+		url: 		"simplechat?build={BUILD_TIME}",
+		data: 		{"action": "del", "ID": IDMES},
+		dataType:	'script',
+		cache:		false,
+		timeout:	10000
+	})
+	DelSync()
+	.done(function(js)
+	{
+		ShowIcon("none");
+		RefreshChat();
+	})
+	.fail(function()
+	{
+		ShowIcon("error");
+	});
+}
 
 function SetLastId(lastid)
 {
@@ -341,7 +394,8 @@ function SetDelay(delay)
 	}
 	localStorage.setItem('ChatDelay', ChatDelay);
 	if (ChatTimer>=0) clearInterval(ChatTimer);
-	ChatTimer = setInterval('RefreshChat()', ChatDelay*1000);
+	ChatTimer = setInterval('RefreshChat()', ChatDelay*1000); 
+	//ChatTimer = setInterval('DelSync()', ChatDelay*1000); 
 }
 
 //------------------------------------------------------------------------------

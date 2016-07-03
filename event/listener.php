@@ -35,8 +35,6 @@ class listener implements EventSubscriberInterface
 	protected $template;
 	protected $phpbb_root_path;
     protected $php_ext;
-    
-
 	
 	static public function getSubscribedEvents()
 	{
@@ -134,7 +132,9 @@ class listener implements EventSubscriberInterface
                 'text'		=> $notify,
                 'color'		=> '000000'
             );
-        	$sql = "INSERT INTO " . CHAT_MESSAGES_TABLE . " " . $this->db->sql_build_array('INSERT', $message);             $this->db->sql_query($sql);
+        	$sql = "INSERT INTO " . CHAT_MESSAGES_TABLE . " " . $this->db->sql_build_array('INSERT', $message);
+			             
+			$this->db->sql_query($sql);
         }
 	}
 	
