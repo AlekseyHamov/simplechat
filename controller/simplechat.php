@@ -350,10 +350,13 @@ switch ($action)
 		echo("SetUsers($json);\n");
         
 		// Output new messages
-		$last_id = $this->request->variable('lastid', 0);
+		$visiblemes=$this->request->variable('visiblemes','');
+		//if ($visiblemes == 'on')
+		//	{$last_id = 0;}
+		//else
+			{$last_id = $this->request->variable('lastid', 0);}
 		$sql = "SELECT * FROM " . CHAT_MESSAGES_TABLE ;
 		$sql .= " WHERE msg_id > " . $last_id ;
-		$visiblemes=$this->request->variable('visiblemes','');
 		if ($visiblemes == 'on')
 			{$sql .= " and hidemessage= false " ;}
 		else
@@ -383,7 +386,7 @@ switch ($action)
 			}
 
 			// Handle private messages
-			if ($row['hidemessage'] == true)
+			if ($row['hidemessage'] == true || $visiblemes == 'on')
 			{$show = true;} 
 			else 
 			{$show = false;} 
