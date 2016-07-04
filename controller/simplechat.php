@@ -275,10 +275,15 @@ switch ($action)
 		//$template->set_custom_template($phpbb_chat_path.'template', 'simplechat');
 //		$this->template->set_custom_style('simplechat', $phpbb_chat_path.'template');
         $this->template->set_filenames(array('body' => 'chat_body.html'));
+		if ($this->auth->acl_gets('a_', 'm_'))
+		{$ACPCHEK = '<input type="checkbox" name="visiblemes" id="visiblemes" >';
+		}else {
+			$ACPCHEK= '<input type="checkbox" name="visiblemes" id="visiblemes" disabled="disabled" >';
+		}
 		$this->template->assign_vars(array(
 			'COPYRIGHT' 	=> '',//'проверка входа'.$user->lang['POWERED_BY'],
 			'BUILD_TIME' 	=> BUILD_TIME,
-			'ACPCHEK'		=> '<input type="checkbox" name="visiblemes" id="visiblemes" >'
+			'ACPCHEK'		=> $ACPCHEK
 		));		
 		generate_smilies('inline', false);
 		page_footer();
@@ -354,13 +359,13 @@ switch ($action)
 		//if ($visiblemes == 'on')
 		//	{$last_id = 0;}
 		//else
-			{$last_id = $this->request->variable('lastid', 0);}
+		$last_id = $this->request->variable('lastid', 0);
 		$sql = "SELECT * FROM " . CHAT_MESSAGES_TABLE ;
 		$sql .= " WHERE msg_id > " . $last_id ;
 		if ($visiblemes == 'on')
 			{$sql .= " and hidemessage= false " ;}
 		else
-			{$sql .= " and hidemessage= true " ;}	
+			{$sql .= " and hidemessage= true ";}	
 		$sql.=" ORDER BY msg_id";	
 		$result = $this->db->sql_query($sql);
 		while ($row = $this->db->sql_fetchrow($result))
@@ -386,8 +391,8 @@ switch ($action)
 			}
 
 			// Handle private messages
-			if ($row['hidemessage'] == true || $visiblemes == 'on')
-			{$show = true;} 
+			if ($row['hidemessage'] == true || $visiblemes == 'on' )
+			{$show = true;}
 			else 
 			{$show = false;} 
 			if( utf8_substr($text, 0, utf8_strlen("private ["))=="private [" )
